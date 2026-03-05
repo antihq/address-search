@@ -17,6 +17,8 @@ new class extends Component
 
     public ?float $longitude = null;
 
+    public ?array $bbox = null;
+
     public function updatedSearchQuery(): void
     {
         if (strlen($this->searchQuery) < 3) {
@@ -41,6 +43,7 @@ new class extends Component
             $this->selectedAddress = $selected['full_address'];
             $this->latitude = $selected['latitude'];
             $this->longitude = $selected['longitude'];
+            $this->bbox = $selected['bbox'];
         }
     }
 
@@ -70,6 +73,7 @@ new class extends Component
                     'full_address' => $feature['properties']['full_address'] ?? '',
                     'longitude' => $feature['geometry']['coordinates'][0],
                     'latitude' => $feature['geometry']['coordinates'][1],
+                    'bbox' => $feature['properties']['bbox'] ?? null,
                 ];
             })
             ->toArray();
@@ -140,6 +144,39 @@ new class extends Component
                                 variant="filled"
                             />
                         </div>
+
+                        @if($bbox)
+                            <flux:fieldset>
+                                <flux:legend>Bounding Box</flux:legend>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <flux:input
+                                        label="Min Longitude"
+                                        :value="$bbox[0]"
+                                        readonly
+                                        variant="filled"
+                                    />
+                                    <flux:input
+                                        label="Min Latitude"
+                                        :value="$bbox[1]"
+                                        readonly
+                                        variant="filled"
+                                    />
+                                    <flux:input
+                                        label="Max Longitude"
+                                        :value="$bbox[2]"
+                                        readonly
+                                        variant="filled"
+                                    />
+                                    <flux:input
+                                        label="Max Latitude"
+                                        :value="$bbox[3]"
+                                        readonly
+                                        variant="filled"
+                                    />
+                                </div>
+                            </flux:fieldset>
+                        @endif
 
                         <div class="flex">
                             <flux:spacer />
