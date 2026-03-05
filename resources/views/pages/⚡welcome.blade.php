@@ -83,32 +83,36 @@ new class extends Component
 ?>
 
 <div class="min-h-screen flex flex-col items-center justify-center p-8">
-    <div class="w-full max-w-xs mx-auto">
+    <div class="w-full max-w-md mx-auto">
         <div class="space-y-8">
-            <flux:select
-                label="Address"
-                wire:model="selectedAddressId"
-                variant="combobox"
-                :filter="false"
-                placeholder="Search for an address..."
-                description="Start typing an address (minimum 3 characters)"
-            >
-                <x-slot name="input">
-                    <flux:select.input
-                        wire:model.live="searchQuery"
-                        placeholder="Search for an address..."
-                    />
-                </x-slot>
+            <flux:fieldset>
+                <flux:legend>Address Search</flux:legend>
 
-                @foreach ($suggestions as $suggestion)
-                    <flux:select.option
-                        value="{{ $suggestion['id'] }}"
-                        wire:key="{{ $suggestion['id'] }}"
-                    >
-                        {{ $suggestion['name'] }}@if($suggestion['place_formatted']) - {{ $suggestion['place_formatted'] }}@endif
-                    </flux:select.option>
-                @endforeach
-            </flux:select>
+                <flux:select
+                    label="Address"
+                    wire:model="selectedAddressId"
+                    variant="combobox"
+                    :filter="false"
+                    placeholder="Search for an address..."
+                    description="Start typing an address (minimum 3 characters)"
+                >
+                    <x-slot name="input">
+                        <flux:select.input
+                            wire:model.live="searchQuery"
+                            placeholder="Search for an address..."
+                        />
+                    </x-slot>
+
+                    @foreach ($suggestions as $suggestion)
+                        <flux:select.option
+                            value="{{ $suggestion['id'] }}"
+                            wire:key="{{ $suggestion['id'] }}"
+                        >
+                            {{ $suggestion['name'] }}@if($suggestion['place_formatted']) - {{ $suggestion['place_formatted'] }}@endif
+                        </flux:select.option>
+                    @endforeach
+                </flux:select>
+            </flux:fieldset>
 
             @if($selectedAddressId)
                 <flux:fieldset>
